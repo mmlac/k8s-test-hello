@@ -33,12 +33,11 @@ loop do
     }
 
     response += " " + res.body
+    puts "Got response of #{res.body}"
   rescue Exception => e 
            response += " Error God :'(   -   #{e.message}"
   end
 
-
-  response += response
 
   # We need to include the Content-Type and Content-Length headers
   # to let the client know the size and type of data

@@ -1,10 +1,12 @@
 node {
     def app
+    def commit
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
+        commit = sh(returnStdout: true; script: 'git rev-parse --short HEAD').trim()
     }
 
     stage('Build image') {
@@ -29,7 +31,7 @@ node {
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
         docker.withRegistry('https://gcr.io', 'gcr:ace-element-175818') {
-            app.push("${env.BUILD_NUMBER}")
+            app.push("${env.BUILD_NUMBER}-${commit}")
             app.push("latest")
         }
     }

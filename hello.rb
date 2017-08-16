@@ -5,6 +5,8 @@ require 'net/http'
 # on localhost:2345 for incoming connections.
 server = TCPServer.new('0.0.0.0', 2345)
 
+puts "Starting server..."
+
 # loop infinitely, processing one incoming
 # connection at a time.
 loop do
@@ -23,13 +25,18 @@ loop do
   response = "Hello" 
 
 
-  url = URI.parse('http://k8stestfrontend-dev.default.svc.cluster.local')
-  req = Net::HTTP::Get.new(url.to_s)
-  res = Net::HTTP.start(url.host, url.port) {|http|
-    http.request(req)
-  }
+  begin
+    url = URI.parse('http://k8stestfrontend-dev.default.svc.cluster.local')
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
 
-  response += res.body
+    response += " " + res.body
+  rescue Exception => e 
+           response += " Error God :'(   -   #{e.message}"
+  end
+
 
   response += response
 

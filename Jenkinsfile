@@ -6,7 +6,7 @@ node {
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
-        commit = sh(returnStdout: true; script: 'git rev-parse --short HEAD').trim()
+        commit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     }
 
     stage('Build image') {
